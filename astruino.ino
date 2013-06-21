@@ -62,24 +62,15 @@ void loop()
     }
     else if (inputCommand.substring(0,2) == "MI"){  //moveIn
       Serial.print("#");
-      int indexPositionCommand = inputCommand.indexOf("MI");
-      int indexEndCommand = inputCommand.indexOf("#");
-      int stepNumbers = inputCommand.substring(indexPositionCommand + 2, indexEndCommand).toInt();
-      moveIn(stepNumbers);
+      moveIn(getStepsFromCommandArgument(inputCommand, "MI"));
     }
     else if (inputCommand.substring(0,2) == "MO"){  //moveOut
       Serial.print("#");
-      int indexPositionCommand = inputCommand.indexOf("MT");
-      int indexEndCommand = inputCommand.indexOf("#");
-      int stepNumbers = inputCommand.substring(indexPositionCommand + 2, indexEndCommand).toInt();
-      moveOut(stepNumbers);
+      moveOut(getStepsFromCommandArgument(inputCommand, "MO"));
     }
     else if (inputCommand.substring(0,2) == "MT"){  //moveTo
       Serial.print("#");
-      int indexPositionCommand = inputCommand.indexOf("MT");
-      int indexEndCommand = inputCommand.indexOf("#");
-      int stepNumbers = inputCommand.substring(indexPositionCommand + 2, indexEndCommand).toInt();
-      moveTo(stepNumbers);
+      moveTo(getStepsFromCommandArgument(inputCommand, "MT"));
     }    
     inputCommand   = "";
     commandComplete = false;
@@ -138,6 +129,12 @@ void moveOut(int steps){
 }
 
 void initPosition(){
+}
+
+int getStepsFromCommandArgument(String command, String commandName){
+    int indexPositionCommand = command.indexOf(commandName);
+    int indexEndCommand = command.indexOf("#");
+    return command.substring(indexPositionCommand + 2, indexEndCommand).toInt();
 }
 
 
