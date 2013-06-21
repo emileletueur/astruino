@@ -19,6 +19,8 @@ void setup()
   pinMode(stepPin, OUTPUT);  
   if(EEPROM.read(IS_ABSOLUTE_ADDR)) isAbsolute = true;
   else isAbsolute = false;
+  if(isAbsolute) {
+  }
   //led  
   pinMode(13, OUTPUT);  
 }
@@ -56,21 +58,25 @@ void loop()
     else if (inputCommand == "IA#"){  //isAbsolute   
       Serial.print("IA" + String(isAbsolute) + "#"); 
     }
-    else if (inputCommand == "IP#"){  //isAbsolute   
+    else if (inputCommand == "IP#"){  //initPosition   
       Serial.print("#");
       initPosition();
     }
+    else if(inputCommand == "SP#"){
+      Serial.print("#");
+      savePosition();
+    }
     else if (inputCommand.substring(0,2) == "MI"){  //moveIn
       Serial.print("#");
-      moveIn(getStepsFromCommandArgument(inputCommand, "MI"));
+      moveIn(getStepsFromMoveCommandArgument(inputCommand, "MI"));
     }
     else if (inputCommand.substring(0,2) == "MO"){  //moveOut
       Serial.print("#");
-      moveOut(getStepsFromCommandArgument(inputCommand, "MO"));
+      moveOut(getStepsFromMoveCommandArgument(inputCommand, "MO"));
     }
     else if (inputCommand.substring(0,2) == "MT"){  //moveTo
       Serial.print("#");
-      moveTo(getStepsFromCommandArgument(inputCommand, "MT"));
+      moveTo(getStepsFromMoveCommandArgument(inputCommand, "MT"));
     }    
     inputCommand   = "";
     commandComplete = false;
@@ -129,9 +135,15 @@ void moveOut(int steps){
 }
 
 void initPosition(){
+  actualPosition = 0;
 }
 
-int getStepsFromCommandArgument(String command, String commandName){
+void savePosition(){  
+  EEPROM.write(POSITION_ADDR, actualPosition >> 8) ; 
+  EEPROM.write(POSITION_ADDR + 1, actualPosition) ; 
+}
+
+int getStepsFromMoveCommandArgument(String command, String commandName){
     int indexPositionCommand = command.indexOf(commandName);
     int indexEndCommand = command.indexOf("#");
     return command.substring(indexPositionCommand + 2, indexEndCommand).toInt();
