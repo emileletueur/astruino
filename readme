@@ -1,1 +1,4 @@
 Astruino
+
+General purpose of this project it's to remotely driven telescope focuser.
+Because of focusing star need a relative good precision depend of telescope aperture ( mine is f/4 so critical focus zone is order of 35 micro-meter) it necessary to could drive with a minimum of 5 step in cfz.
