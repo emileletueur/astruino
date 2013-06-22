@@ -11,7 +11,7 @@ boolean isAbsolute = false;
 int actualPosition = 0;
 boolean stepDirection = false; //true = moveIn
 int stepPin = STEP_PIN;      
-int frequency = 1000/STEP_FREQUENCY;
+int frequency = 1000 / STEP_FREQUENCY;
 
 void setup()
 { 
@@ -28,55 +28,55 @@ void setup()
 void loop()
 {
   if(commandComplete){    
-    if(inputCommand == "IM#"){  //IsMoving
-      if(isMoving) Serial.print("IMT#");
-      else Serial.print("IMF#");
+    if(inputCommand == COMMAND_IS_MOVING){  //IsMoving
+      if(isMoving) Serial.print(COMMANDIS_MOVING_TRUE);
+      else Serial.print(COMMANDIS_MOVING_FALSE);
     }
-    else if (inputCommand == "MI#"){  //MaxIncrement
+    else if (inputCommand == COMMAND_MAX_INCREMENT){  //MaxIncrement
       Serial.print("MI" + String(MAX_INCREMENT) + "#");
     }
-    else if (inputCommand  == "MS#"){  //MaxStep
+    else if (inputCommand  == COMMAND_MAX_STEP){  //MaxStep
       Serial.print("MS" + String(MAX_STEP) + "#");
     }
-    else if (inputCommand == "SS#"){  //StepSize   
+    else if (inputCommand == COMMAND_STEP_SIZE){  //StepSize   
       Serial.print("SS" + String(STEP_SIZE) + "#"); 
     }
-    else if (inputCommand == "H#"){  //Halt
+    else if (inputCommand == COMMAND_HALT){  //Halt
       Serial.print("#");
       isHalt = true;  
     }
-    else if (inputCommand == "A#"){  //Absolute
+    else if (inputCommand == COMMAND_SET_ABSOLUTE){  //setAbsolute
       Serial.print("#");
       isAbsolute = true;      
       EEPROM.write(IS_ABSOLUTE_ADDR, 1) ;
     }
-    else if (inputCommand == "R#"){  //Relative
+    else if (inputCommand == COMMAND_SET_RELATIVE){  //setRelative
       Serial.print("#");
       isAbsolute = false;     
       EEPROM.write(IS_ABSOLUTE_ADDR, 0) ; 
     }
-    else if (inputCommand == "IA#"){  //isAbsolute   
+    else if (inputCommand == COMMAND_IS_ABSOLUTE){  //isAbsolute   
       Serial.print("IA" + String(isAbsolute) + "#"); 
     }
-    else if (inputCommand == "IP#"){  //initPosition   
+    else if (inputCommand == COMMAND_INIT_POSITION){  //initPosition   
       Serial.print("#");
       initPosition();
     }
-    else if(inputCommand == "SP#"){
+    else if(inputCommand == COMMAND_SAVE_POSITION){
       Serial.print("#");
       savePosition();
     }
-    else if (inputCommand.substring(0,2) == "MI"){  //moveIn
+    else if (inputCommand.substring(0,2) == COMMAND_MOVE_IN){  //moveIn
       Serial.print("#");
-      moveIn(getStepsFromMoveCommandArgument(inputCommand, "MI"));
+      moveIn(getStepsFromMoveCommandArgument(inputCommand, COMMAND_MOVE_IN));
     }
-    else if (inputCommand.substring(0,2) == "MO"){  //moveOut
+    else if (inputCommand.substring(0,2) == COMMAND_MOVE_OUT){  //moveOut
       Serial.print("#");
-      moveOut(getStepsFromMoveCommandArgument(inputCommand, "MO"));
+      moveOut(getStepsFromMoveCommandArgument(inputCommand, COMMAND_MOVE_OUT));
     }
-    else if (inputCommand.substring(0,2) == "MT"){  //moveTo
+    else if (inputCommand.substring(0,2) == COMMAND_MOVE_TO){  //moveTo
       Serial.print("#");
-      moveTo(getStepsFromMoveCommandArgument(inputCommand, "MT"));
+      moveTo(getStepsFromMoveCommandArgument(inputCommand, COMMAND_MOVE_TO));
     }    
     inputCommand   = "";
     commandComplete = false;
