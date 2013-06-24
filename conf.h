@@ -4,4 +4,4 @@
 #define MAX_STEP 4000
 #define STEP_SIZE 8
 #define STEP_FREQUENCY 200
-#define STEP_PIN 12
+#define STEP_PIN 10

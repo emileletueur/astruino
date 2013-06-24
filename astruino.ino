@@ -22,7 +22,9 @@ void setup()
   if(isAbsolute) {
   }
   //led  
-  pinMode(13, OUTPUT);  
+  pinMode(13, OUTPUT); 
+  pinMode(12, OUTPUT); 
+  pinMode(11, OUTPUT);  
 }
 
 void loop()
@@ -33,7 +35,7 @@ void loop()
       else Serial.print(COMMANDIS_MOVING_FALSE);
     }
     else if (inputCommand == COMMAND_MAX_INCREMENT){  //MaxIncrement
-      Serial.print("MI" + String(MAX_INCREMENT) + "#");
+      Serial.print("MIN" + String(MAX_INCREMENT) + "#");
     }
     else if (inputCommand  == COMMAND_MAX_STEP){  //MaxStep
       Serial.print("MS" + String(MAX_STEP) + "#");
@@ -67,7 +69,7 @@ void loop()
       savePosition();
     }
     else if (inputCommand.substring(0,2) == COMMAND_MOVE_IN){  //moveIn
-      Serial.print("#");
+      Serial.print(inputCommand.substring(0,2) + "#");
       moveIn(getStepsFromMoveCommandArgument(inputCommand, COMMAND_MOVE_IN));
     }
     else if (inputCommand.substring(0,2) == COMMAND_MOVE_OUT){  //moveOut
@@ -104,6 +106,8 @@ void moveIn(int steps){
     if(isHalt){
       isHalt = false;
       digitalWrite(13, LOW);
+      digitalWrite(12, HIGH);
+      delay(1000);
       break;
     }    
     if(i%20) digitalWrite(13, LOW);
@@ -121,17 +125,20 @@ void moveOut(int steps){
   for(int i = 0; i < steps; i++){
     if(isHalt){
       isHalt = false;
-      digitalWrite(13, LOW);
+      digitalWrite(11, LOW);
+      digitalWrite(12, HIGH);
+      delay(1000);
+      digitalWrite(12, HIGH);
       break;
     }    
-    if(i%20) digitalWrite(13, LOW);
-    else digitalWrite(13, HIGH);    
+    if(i%20) digitalWrite(11, LOW);
+    else digitalWrite(11, HIGH);    
     digitalWrite(stepPin, LOW);
     digitalWrite(stepPin, HIGH);
     if(isAbsolute)actualPosition ++;
     delay(frequency);
   }
-  digitalWrite(13, LOW);
+  digitalWrite(11, LOW);
 }
 
 void initPosition(){
